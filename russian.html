@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отечественная философия</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="back-link">← На главную</a>
+    <header>
+        <h1>Отечественная философия</h1>
+        <p class="subtitle">С 988 года до наших дней</p>
+    </header>
+
+    <div class="timeline-section">
+        <p class="hint">Выбери эпоху · листай горизонтально ‹›</p>
+        <div class="headers-wrapper">
+            <div class="headers-track" id="headersTrack"></div>
+        </div>
+        <input type="range" id="timelineSlider" class="timeline-slider" min="0" max="5" value="0" step="1">
+        <div class="controls">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            <button class="nav-btn" id="nextBtn">Вперёд →</button>
+        </div>
+        <p class="hint">← → на клавиатуре</p>
+    </div>
+
+    <div class="content-area" id="contentArea"></div>
+</div>
+
+<script src="script.js"></script>
+<script>
+const russianData = [
+    {
+        title: "Древняя Русь (988–XVII вв.)",
+        content: `
+            <h2 class="period-title">Древнерусская философия</h2>
+            <p class="period-dates">988 — XVII вв. · От Крещения Руси до реформ Петра I</p>
+            <div class="main-question"><b>Главный вопрос:</b> каково место Руси в христианском мире?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Бог — творец, мир — творение</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Знание через Откровение и святоотеческие тексты</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — образ Божий, призван к спасению</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Высшая ценность — вера, соборность, святость</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Символическое, притчевое мышление</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Смирение, любовь, нестяжание</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Ключевые вехи</h3>
+                <div class="subperiod"><b>988 г.</b> — Крещение Руси князем Владимиром</div>
+                <div class="subperiod"><b>XI в.</b> — митрополит Иларион, «Слово о Законе и Благодати»</div>
+                <div class="subperiod"><b>XII в.</b> — «Поучение» Владимира Мономаха, «Повесть временных лет»</div>
+                <div class="subperiod"><b>XIV–XV вв.</b> — Сергий Радонежский, спор нестяжателей и иосифлян</div>
+                <div class="subperiod"><b>XVI в.</b> — идея «Москва — Третий Рим» (старец Филофей)</div>
+                <div class="subperiod"><b>XVII в.</b> — раскол церкви, протопоп Аввакум</div>
+            </div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/russian/vladimir.jpg" alt="Мономах" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Владимир Мономах</h4>
+                            <div class="years">1053–1125</div>
+                            <p>«Поучение» — этико-педагогический текст об ответственности правителя.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Соборность</b><span>Свободное единство людей в любви и вере</span></div>
+                    <div class="term"><b>Симфония властей</b><span>Гармония церкви и государства</span></div>
+                    <div class="term"><b>Нестяжание</b><span>Отказ церкви от земных богатств</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "XVIII — нач. XIX в.",
+        content: `
+            <h2 class="period-title">Становление светской философии</h2>
+            <p class="period-dates">XVIII — первая половина XIX в.</p>
+            <div class="main-question"><b>Главный вопрос:</b> как соединить просвещение с русской самобытностью?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Материалистические тенденции + деизм</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Опыт, наука, разум — против откровения</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — гражданин, просветитель</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Свобода, образование, прогресс</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Естественнонаучный метод</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Критика крепостничества, естественное право</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Ключевые вехи</h3>
+                <div class="subperiod"><b>1724 г.</b> — основание Петербургской Академии наук</div>
+                <div class="subperiod"><b>1755 г.</b> — основание Московского университета (Ломоносов)</div>
+                <div class="subperiod"><b>1790 г.</b> — «Путешествие из Петербурга в Москву» Радищева</div>
+                <div class="subperiod"><b>1836 г.</b> — «Философические письма» Чаадаева</div>
+            </div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/russian/lomonoosv.jpg" alt="Ломоносов" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>М.В. Ломоносов</h4>
+                            <div class="years">1711–1765</div>
+                            <p>Энциклопедист, естествоиспытатель. Материалистические тенденции. Реформа языка.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/radishchev.jpg" alt="Радищев" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>А.Н. Радищев</h4>
+                            <div class="years">1749–1802</div>
+                            <p>Критик крепостничества. Идеи свободы и общественного договора.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/chaadaev.jpg" alt="Чаадаев" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>П.Я. Чаадаев</h4>
+                            <div class="years">1794–1856</div>
+                            <p>«Философические письма». Повод для спора западников и славянофилов.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Западники</b><span>Россия — часть Европы, путь — через реформы</span></div>
+                    <div class="term"><b>Славянофилы</b><span>Особый путь, основа — православие и община</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "XIX век (Золотой век)",
+        content: `
+            <h2 class="period-title">Золотой век русской философии</h2>
+            <p class="period-dates">Вторая половина XIX в.</p>
+            <div class="main-question"><b>Главный вопрос:</b> в чём «руская идея», какова судьба России?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Целостное мировоззрение, соборное бытие</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Целостное знание: разум + вера + опыт</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — нравственное, религиозное существо</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Истина, добро, красота, справедливость</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Диалогичность, литературно-философский жанр</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Нравственный абсолют, «всё позволено?»</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Ключевые вехи</h3>
+                <div class="subperiod"><b>1836 г.</b> — «Философические письма» Чаадаева → раскол на западников/славянофилов</div>
+                <div class="subperiod"><b>1840–1850-е</b> — спор западников (Герцен, Белинский) и славянофилов (Хомяков, Киреевский)</div>
+                <div class="subperiod"><b>1860-е</b> — революционные демократы (Чернышевский, Добролюбов)</div>
+                <div class="subperiod"><b>1860–1880-е</b> — Ф.М. Достоевский: «Братья Карамазовы», «Преступление и наказание»</div>
+                <div class="subperiod"><b>1880–1890-е</b> — Л.Н. Толстой: учение о непротивлении, опрощении</div>
+                <div class="subperiod"><b>1869 г.</b> — Н.Я. Данилевский «Россия и Европа»</div>
+            </div>
+
+            <div class="sciences"><b>Золотой век литературы:</b> Пушкин, Лермонтов, Гоголь, Тургенев, Достоевский, Толстой, Чехов</div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/russian/khomyakov.jpg" alt="Хомяков" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>А.С. Хомяков</h4>
+                            <div class="years">1804–1860</div>
+                            <p>Основатель славянофильства. Учение о соборности.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/herzen.jpg" alt="Герцен" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>А.И. Герцен</h4>
+                            <div class="years">1812–1870</div>
+                            <p>Русский социализм, община как основа будущего строя.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/chernyshevsky.jpg" alt="Чернышевский" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Н.Г. Чернышевский</h4>
+                            <div class="years">1828–1889</div>
+                            <p>«Что делать?» Антропологический принцип в этике. Материализм.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/dostoevsky.jpg" alt="Достоевский" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Ф.М. Достоевский</h4>
+                            <div class="years">1821–1881</div>
+                            <p>Проблемы свободы, зла, Бога. «Если Бога нет — всё позволено?»</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/tolstoy.jpg" alt="Толстой" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Л.Н. Толстой</h4>
+                            <div class="years">1828–1910</div>
+                            <p>Непротивление злу насилием. Опрощение. «Исповедь».</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Русская идея</b><span>Особая миссия и путь России</span></div>
+                    <div class="term"><b>Почвенничество</b><span>Возврат интеллигенции к народным основам</span></div>
+                    <div class="term"><b>Антропологический принцип</b><span>Человек — высшая ценность и мера всего</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Серебряный век",
+        content: `
+            <h2 class="period-title">Серебряный век (конец XIX — начало XX в.)</h2>
+            <p class="period-dates">1890-е — 1920-е гг.</p>
+            <div class="main-question"><b>Главный вопрос:</b> как соединить религию, философию и науку в целостное мировоззрение?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Всеединство, Софиология, космизм</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Целостное знание: разум + интуиция + вера</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — творец, соучастник Бога</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Свобода, творчество, Богочеловечество</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Синтез философии, богословия, науки, искусства</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Этика творчества, активной любви</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Ключевые вехи</h3>
+                <div class="subperiod"><b>1900 г.</b> — смерть Вл. Соловьёва, но его идеи определяют эпоху</div>
+                <div class="subperiod"><b>1903 г.</b> — сборник «Проблемы идеализма» — манифест ренессанса</div>
+                <div class="subperiod"><b>1909 г.</b> — сборник «Вехи» — критика радикальной интеллигенции</div>
+                <div class="subperiod"><b>1910–1917 гг.</b> — расцвет религиозной философии, космизма</div>
+                <div class="subperiod"><b>1922 г.</b> — «Философские пароходы» — высылка мыслителей из СССР</div>
+            </div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/russian/solovyov.jpg" alt="Соловьёв" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Вл. Соловьёв</h4>
+                            <div class="years">1853–1900</div>
+                            <p>Учение о всеединстве, Софии, Богочеловечестве. «Оправдание добра».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/berdyaev.jpg" alt="Бердяев" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Н.А. Бердяев</h4>
+                            <div class="years">1874–1948</div>
+                            <p>Философия свободы и творчества. «Смысл истории», «Русская идея».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/florensky.jpg" alt="Флоренский" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>П.А. Флоренский</h4>
+                            <div class="years">1882–1937</div>
+                            <p>«Столп и утверждение Истины». Синтез богословия, науки, искусства. Репрессирован.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/fedorov.jpg" alt="Фёдоров" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Н.Ф. Фёдоров</h4>
+                            <div class="years">1829–1903</div>
+                            <p>«Общее дело» — воскрешение умерших, регуляция природы. Основа космизма.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/vernadsky.jpg" alt="Вернадский" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>В.И. Вернадский</h4>
+                            <div class="years">1863–1945</div>
+                            <p>Учение о биосфере и ноосфере. Человек — геологическая сила.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Всеединство</b><span>Единство многообразного в Абсолюте</span></div>
+                    <div class="term"><b>София</b><span>Душа Мира, Премудрость Божия</span></div>
+                    <div class="term"><b>Богочеловечество</b><span>Союз Бога и человека в Христе</span></div>
+                    <div class="term"><b>Ноосфера</b><span>Сфера разума, этап эволюции биосферы</span></div>
+                    <div class="term"><b>Космизм</b><span>Единство человека и космоса</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Советский период",
+        content: `
+            <h2 class="period-title">Советская философия</h2>
+            <p class="period-dates">1917 — 1991 гг.</p>
+            <div class="main-question"><b>Главный вопрос:</b> как совместить марксизм с философской свободой?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Диалектический материализм (официально)</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Теория отражения, практика — критерий истины</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — продукт общественных отношений</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Партийность, коллективизм, коммунизм</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Диалектика как наука о всеобщих законах</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Мораль классова, служит построению коммунизма</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Ключевые вехи</h3>
+                <div class="subperiod"><b>1920-е гг.</b> — философские дискуссии: «механисты» vs «диалектики» (Деборин)</div>
+                <div class="subperiod"><b>1930–1950-е</b> — ждановщина, идеологический контроль</div>
+                <div class="subperiod"><b>1950–1960-е</b> — «оттепель», возрождение философии</div>
+                <div class="subperiod"><b>1960–1980-е</b> — Ильенков, Мамардашвили, методологический кружок</div>
+                <div class="subperiod"><b>1922 г.</b> — эмиграция (Бердяев, Франк, Ильин, Булгаков)</div>
+                <div class="subperiod"><b>1930–1950-е</b> — Зеньковский пишет «Историю русской философии» в эмиграции</div>
+            </div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/russian/ilyenkov.jpg" alt="Ильенков" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Э.В. Ильенков</h4>
+                            <div class="years">1924–1979</div>
+                            <p>«Диалектика абстрактного и конкретного». Возрождение диалектики в СССР.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/russian/mamardashvili.jpg" alt="Мамардашвили" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>М.К. Мамардашвили</h4>
+                            <div class="years">1930–1990</div>
+                            <p>Феноменология сознания, лекции как философия. Картезианские размышления.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Диамат</b><span>Диалектический материализм — официальная философия</span></div>
+                    <div class="term"><b>Истмат</b><span>Исторический материализм — применение диамата к обществу</span></div>
+                    <div class="term"><b>Партийность философии</b><span>Принцип: философия служит классу</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Современная Россия",
+        content: `
+            <h2 class="period-title">Современная российская философия</h2>
+            <p class="period-dates">С 1991 г. по наши дни</p>
+            <div class="main-question"><b>Главный вопрос:</b> какова национальная идентичность в глобальном мире?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Плюрализм, диалог традиций</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Открытость мировой мысли, синтез подходов</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек в условиях постсоветского перехода</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Поиск национальной идеи, диалог культур</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Диалогизм, полифония традиций</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Поиск новых оснований морали</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Ключевые вехи</h3>
+                <div class="subperiod"><b>1990-е гг.</b> — возвращение запрещённых имён, переводы западной классики</div>
+                <div class="subperiod"><b>2000-е гг.</b> — рецепция феноменологии, герменевтики, постмодерна</div>
+                <div class="subperiod"><b>2010–2020-е гг.</b> — дискуссии о евразийстве, постсоветской идентичности</div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Евразийство</b><span>Россия — особая цивилизация между Европой и Азией</span></div>
+                    <div class="term"><b>Постсоветская идентичность</b><span>Поиск самоопределения после распада СССР</span></div>
+                </div>
+            </div>
+        `
+    }
+];
+
+document.addEventListener('DOMContentLoaded', () => initTimeline(russianData));
+</script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Европейская философия</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="back-link">← На главную</a>
+    <header>
+        <h1>Европейская философия</h1>
+        <p class="subtitle">Шесть периодов развития</p>
+    </header>
+
+    <div class="timeline-section">
+        <p class="hint">Выбери эпоху · листай горизонтально ‹›</p>
+        <div class="headers-wrapper">
+            <div class="headers-track" id="headersTrack"></div>
+        </div>
+        <input type="range" id="timelineSlider" class="timeline-slider" min="0" max="5" value="0" step="1">
+        <div class="controls">
+            <button class="nav-btn" id="prevBtn">← Назад</button>
+            <button class="nav-btn" id="nextBtn">Вперёд →</button>
+        </div>
+        <p class="hint">← → на клавиатуре</p>
+    </div>
+
+    <div class="content-area" id="contentArea"></div>
+</div>
+
+<script src="script.js"></script>
+<script>
+const worldData = [
+    {
+        title: "Мифический",
+        content: `
+            <h2 class="period-title">Мифический период</h2>
+            <p class="period-dates">До VIII в. до н.э.</p>
+            <div class="main-question"><b>Главный вопрос:</b> как устроен мир и каково место человека в нём?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Мир одушевлён, боги и стихии — источник всего</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Знание через миф, откровение, ритуал</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — часть космоса, подчинён богам</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Ценности — воля богов, судьба, рок</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Мифологическое мышление, символизм</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Подчинение судьбе, ритуальная чистота</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Три школы ранней мысли</h3>
+                <div class="subperiod"><b>1. Милетская школа</b> — поиск первоначала (архэ) в природе</div>
+                <div class="subperiod"><b>2. Пифагорейцы</b> — число как основа мироздания</div>
+                <div class="subperiod"><b>3. Элейская школа</b> (Парменид) — бытие едино и неизменно</div>
+            </div>
+
+            <div class="sciences"><b>Развивающиеся науки:</b> астрономия, математика, натурфилософия</div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/world/thales.jpg" alt="Фалес" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Фалес</h4>
+                            <div class="years">VII–VI вв. до н.э.</div>
+                            <p>Первый философ. Архэ — вода. Предсказал солнечное затмение.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/heraclitus.jpg" alt="Гераклит" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Гераклит</h4>
+                            <div class="years">VI–V вв. до н.э.</div>
+                            <p>«Всё течёт». Архэ — огонь. Учение о логосе.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/democritus.jpg" alt="Демокрит" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Демокрит</h4>
+                            <div class="years">V–IV вв. до н.э.</div>
+                            <p>Основатель атомизма. Мир из атомов и пустоты.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Архэ</b><span>Первоначало, основа всего сущего</span></div>
+                    <div class="term"><b>Космос</b><span>Упорядоченная вселенная</span></div>
+                    <div class="term"><b>Логос</b><span>Мировой закон, разум, слово</span></div>
+                    <div class="term"><b>Атом</b><span>Неделимая частица бытия</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Античный",
+        content: `
+            <h2 class="period-title">Античная философия</h2>
+            <p class="period-dates">VIII в. до н.э. — V в. н.э.</p>
+            <div class="main-question"><b>Главный вопрос:</b> что есть бытие и как познать истину?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Космоцентризм. Мир — упорядоченный космос</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Истина через разум и созерцание идей</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — разумное существо, часть полиса</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Высшие ценности — благо, истина, красота</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Аристотель создал формальную логику</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Добродетель как путь к счастью (эвдемонии)</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Подпериоды</h3>
+                <div class="subperiod"><b>Ранняя античность (VII–V вв. до н.э.)</b> — досократики, поиск первоначала</div>
+                <div class="subperiod"><b>Классика (V–IV вв. до н.э.)</b> — Сократ, Платон, Аристотель. Вершина</div>
+                <div class="subperiod"><b>Эллинизм (IV в. до н.э. — V в. н.э.)</b> — стоики, эпикурейцы, скептики, неоплатоники</div>
+            </div>
+
+            <div class="sciences"><b>Развивающиеся науки:</b> математика, геометрия, астрономия, биология, логика, риторика</div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/world/socrates.jpg" alt="Сократ" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Сократ</h4>
+                            <div class="years">469–399 до н.э.</div>
+                            <p>Повернул философию к человеку. Майевтика. «Я знаю, что ничего не знаю».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/plato.jpg" alt="Платон" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Платон</h4>
+                            <div class="years">428–348 до н.э.</div>
+                            <p>Учение об идеях (эйдосах). Основал Академию. «Государство».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/aristotle.jpg" alt="Аристотель" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Аристотель</h4>
+                            <div class="years">384–322 до н.э.</div>
+                            <p>Систематизатор наук. Создатель логики. Учение о форме и материи.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/epicurus.jpg" alt="Эпикур" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Эпикур</h4>
+                            <div class="years">341–270 до н.э.</div>
+                            <p>Этика наслаждения (атараксия). Развил атомизм Демокрита.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/zeno.jpg" alt="Зенон" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Зенон Китийский</h4>
+                            <div class="years">334–262 до н.э.</div>
+                            <p>Основатель стоицизма. Жизнь в согласии с природой и разумом.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Эйдос</b><span>Идея, вечная сущность вещи (Платон)</span></div>
+                    <div class="term"><b>Майевтика</b><span>Метод Сократа — «роды» истины через диалог</span></div>
+                    <div class="term"><b>Атараксия</b><span>Безмятежность души, цель жизни</span></div>
+                    <div class="term"><b>Эвдемония</b><span>Счастье как высшее благо</span></div>
+                    <div class="term"><b>Субстанция</b><span>Первооснова бытия (Аристотель)</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Средневековый",
+        content: `
+            <h2 class="period-title">Средневековая философия</h2>
+            <p class="period-dates">V — XV вв.</p>
+            <div class="main-question"><b>Главный вопрос:</b> как соотносятся вера и разум, Бог и мир?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Теоцентризм. Бог — творец и основа всего</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Истина в Откровении, разум — служанка веры</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — творение Бога, с душой и свободой</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Высшая ценность — Бог, спасение души</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Схоластический метод, силлогизм</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Христианская мораль, любовь, грех, добродетель</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Подпериоды</h3>
+                <div class="subperiod"><b>Патристика (II–VIII вв.)</b> — «отцы церкви»: Августин, Боэций</div>
+                <div class="subperiod"><b>Ранняя схоластика (IX–XII вв.)</b> — Ансельм, Абеляр. Спор об универсалиях</div>
+                <div class="subperiod"><b>Высокая схоластика (XIII–XIV вв.)</b> — Фома Аквинский. Вершина</div>
+                <div class="subperiod"><b>Поздняя схоластика (XIV–XV вв.)</b> — Оккам. Кризис схоластики</div>
+            </div>
+
+            <div class="sciences"><b>Развивающиеся науки:</b> богословие, семиотика, университетская наука</div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/world/augustine.jpg" alt="Августин" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Аврелий Августин</h4>
+                            <div class="years">354–430</div>
+                            <p>«Исповедь», «О граде Божием». Основа патристики. Учение о времени и благодати.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/aquinas.jpg" alt="Аквинский" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Фома Аквинский</h4>
+                            <div class="years">1225–1274</div>
+                            <p>Синтез аристотелизма и христианства. 5 доказательств бытия Бога. «Сумма теологии».</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Теизм</b><span>Учение о личном Боге-творце</span></div>
+                    <div class="term"><b>Креационизм</b><span>Мир сотворён Богом из ничего</span></div>
+                    <div class="term"><b>Провиденциализм</b><span>Божественное управление миром</span></div>
+                    <div class="term"><b>Универсалии</b><span>Общие понятия (род, вид)</span></div>
+                    <div class="term"><b>Схоластика</b><span>«Школьная» философия, рациональное богословие</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Возрождение",
+        content: `
+            <h2 class="period-title">Философия Возрождения</h2>
+            <p class="period-dates">XIV — XVI вв.</p>
+            <div class="main-question"><b>Главный вопрос:</b> какова природа человека и его творческая сила?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Природа — живая, бесконечная, божественная</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Опыт + наблюдение, возврат к античности</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Антропоцентризм. Человек — центр и творец</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Ценность — творчество, красота, индивидуальность</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Натурфилософия, пантеизм, герметизм</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Гуманизм, свобода, достоинство личности</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Подпериоды</h3>
+                <div class="subperiod"><b>Проторенессанс (XIII–XIV вв.)</b> — Данте, Джотто</div>
+                <div class="subperiod"><b>Раннее Возрождение (XV в.)</b> — Италия, гуманизм</div>
+                <div class="subperiod"><b>Высокое Возрождение (конец XV–XVI вв.)</b> — Леонардо, титаны</div>
+                <div class="subperiod"><b>Позднее Возрождение (конец XVI в.)</b> — Бруно, Кампанелла</div>
+            </div>
+
+            <div class="sciences"><b>Развивающиеся науки:</b> анатомия, астрономия (Коперник), механика, искусство</div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/world/davinci.jpg" alt="Леонардо" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Леонардо да Винчи</h4>
+                            <div class="years">1452–1519</div>
+                            <p>Универсальный гений. Соединение искусства и науки. Опыт как источник знания.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/bruno.jpg" alt="Бруно" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Джордано Бруно</h4>
+                            <div class="years">1548–1600</div>
+                            <p>Учение о бесконечной Вселенной. Пантеизм. Сожжён инквизицией.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Гуманизм</b><span>Ценность человека, его разума и свободы</span></div>
+                    <div class="term"><b>Пантеизм</b><span>Бог тождествен природе</span></div>
+                    <div class="term"><b>Титанизм</b><span>Вера в безграничные возможности человека</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Новое время",
+        content: `
+            <h2 class="period-title">Философия Нового времени</h2>
+            <p class="period-dates">XVII — XVIII вв.</p>
+            <div class="main-question"><b>Главный вопрос:</b> как достоверно познать мир? Каковы методы науки?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Мир — механизм, познаваемый разумом</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Спор рационализма и эмпиризма</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — субъект познания и преобразователь</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Ценность — прогресс, знание, свобода</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Индукция (Бэкон) и дедукция (Декарт)</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Естественное право, общественный договор</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Подпериоды</h3>
+                <div class="subperiod"><b>Рационализм (XVII в.)</b> — Декарт, Спиноза, Лейбниц. Источник знания — разум</div>
+                <div class="subperiod"><b>Эмпиризм (XVII–XVIII вв.)</b> — Бэкон, Локк, Юм. Источник знания — опыт</div>
+                <div class="subperiod"><b>Просвещение (XVIII в.)</b> — Вольтер, Руссо, Дидро. Вера в разум и прогресс</div>
+                <div class="subperiod"><b>Немецкая классика (конец XVIII в.)</b> — Кант. Критическая философия</div>
+            </div>
+
+            <div class="sciences"><b>Развивающиеся науки:</b> физика (Ньютон), математика, химия, биология, политэкономия</div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/world/bacon.jpg" alt="Бэкон" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Фрэнсис Бэкон</h4>
+                            <div class="years">1561–1626</div>
+                            <p>«Знание — сила». Основоположник эмпиризма и научного метода.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/descartes.jpg" alt="Декарт" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Рене Декарт</h4>
+                            <div class="years">1596–1650</div>
+                            <p>«Мыслю, следовательно, существую». Рационализм, метод сомнений.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/spinoza.jpg" alt="Спиноза" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Барух Спиноза</h4>
+                            <div class="years">1632–1677</div>
+                            <p>Пантеизм: Бог = Природа. Субстанция едина. Этика геометрическим методом.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/kant.jpg" alt="Кант" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Иммануил Кант</h4>
+                            <div class="years">1724–1804</div>
+                            <p>«Критика чистого разума». Вещь в себе. Категорический императив.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Рационализм</b><span>Разум — главный источник знания</span></div>
+                    <div class="term"><b>Эмпиризм</b><span>Опыт — главный источник знания</span></div>
+                    <div class="term"><b>Априорное</b><span>Знание до опыта (Кант)</span></div>
+                    <div class="term"><b>Категорический императив</b><span>Поступай так, чтобы максима стала всеобщим законом</span></div>
+                    <div class="term"><b>Табула раса</b><span>«Чистая доска» — разум при рождении пуст (Локк)</span></div>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Современная",
+        content: `
+            <h2 class="period-title">Современная философия</h2>
+            <p class="period-dates">XIX — XXI вв.</p>
+            <div class="main-question"><b>Главный вопрос:</b> что такое существование, язык, власть, человек?</div>
+            
+            <div class="structure-grid">
+                <div class="struct-card"><h4>Онтология</h4><p>Плюрализм: бытие многообразно, проблематично</p></div>
+                <div class="struct-card"><h4>Гносеология</h4><p>Кризис абсолютной истины, лингвистический поворот</p></div>
+                <div class="struct-card"><h4>Антропология</h4><p>Человек — свободное, конечное, ответственное существо</p></div>
+                <div class="struct-card"><h4>Аксиология</h4><p>Кризис ценностей, переоценка, множественность</p></div>
+                <div class="struct-card"><h4>Логика</h4><p>Аналитическая философия, семиотика, деконструкция</p></div>
+                <div class="struct-card"><h4>Этика</h4><p>Экзистенциальная, диалогическая, прикладная этика</p></div>
+            </div>
+
+            <div class="subperiods">
+                <h3>Подпериоды</h3>
+                <div class="subperiod"><b>Немецкая классика (конец XVIII–XIX вв.)</b> — Фихте, Шеллинг, Гегель</div>
+                <div class="subperiod"><b>Иррационализм (XIX в.)</b> — Шопенгауэр, Ницше, Кьеркегор</div>
+                <div class="subperiod"><b>Марксизм (с 1840-х)</b> — Маркс, Энгельс. Материализм</div>
+                <div class="subperiod"><b>Феноменология и экзистенциализм (XX в.)</b> — Гуссерль, Хайдеггер, Сартр</div>
+                <div class="subperiod"><b>Аналитическая философия (XX в.)</b> — Рассел, Витгенштейн</div>
+                <div class="subperiod"><b>Постмодернизм (вторая половина XX в.)</b> — Фуко, Деррида, Делёз</div>
+            </div>
+
+            <div class="sciences"><b>Развивающиеся науки:</b> психология, социология, лингвистика, квантовая физика, информатика</div>
+
+            <div class="philosophers-section">
+                <h3>Ключевые личности</h3>
+                <div class="philosophers-grid">
+                    <div class="philosopher-card">
+                        <img src="images/world/hegel.jpg" alt="Гегель" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Георг Гегель</h4>
+                            <div class="years">1770–1831</div>
+                            <p>Диалектика. Абсолютный дух. «Всё действительное разумно».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/nietzsche.jpg" alt="Ницше" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Фридрих Ницше</h4>
+                            <div class="years">1844–1900</div>
+                            <p>«Бог умер». Воля к власти. Сверхчеловек. Переоценка ценностей.</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/marx.jpg" alt="Маркс" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Карл Маркс</h4>
+                            <div class="years">1818–1883</div>
+                            <p>Исторический материализм. Классовая борьба. «Капитал».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/husserl.jpg" alt="Гуссерль" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Эдмунд Гуссерль</h4>
+                            <div class="years">1859–1938</div>
+                            <p>Основатель феноменологии. «К самим вещам!»</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/heidegger.jpg" alt="Хайдеггер" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Мартин Хайдеггер</h4>
+                            <div class="years">1889–1976</div>
+                            <p>Вопрос о бытии. Dasein. «Бытие и время».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/sartre.jpg" alt="Сартр" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Жан-Поль Сартр</h4>
+                            <div class="years">1905–1980</div>
+                            <p>Экзистенциализм. «Существование предшествует сущности».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/wittgenstein.jpg" alt="Витгенштейн" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Людвиг Витгенштейн</h4>
+                            <div class="years">1889–1951</div>
+                            <p>Языковая философия. «О чём невозможно говорить, о том следует молчать».</p>
+                        </div>
+                    </div>
+                    <div class="philosopher-card">
+                        <img src="images/world/foucault.jpg" alt="Фуко" onerror="this.style.display='none'">
+                        <div class="philosopher-info">
+                            <h4>Мишель Фуко</h4>
+                            <div class="years">1926–1984</div>
+                            <p>Власть и знание. Археология знания. Постструктурализм.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Ключевые термины</h3>
+                <div class="terms-list">
+                    <div class="term"><b>Диалектика</b><span>Развитие через противоречия (Гегель)</span></div>
+                    <div class="term"><b>Воля к власти</b><span>Первооснова бытия (Ницше)</span></div>
+                    <div class="term"><b>Экзистенция</b><span>Подлинное существование человека</span></div>
+                    <div class="term"><b>Dasein</b><span>«Вот-бытие», бытие человека (Хайдеггер)</span></div>
+                    <div class="term"><b>Деконструкция</b><span>Разбор скрытых смыслов текста (Деррида)</span></div>
+                    <div class="term"><b>Парадигма</b><span>Система установок науки (Кун)</span></div>
+                </div>
+            </div>
+        `
+    }
+];
+
+document.addEventListener('DOMContentLoaded', () => initTimeline(worldData));
+</script>
+</body>
+</html>
