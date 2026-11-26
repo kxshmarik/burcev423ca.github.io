@@ -37,6 +37,9 @@ function initTimeline(data) {
 
         prevBtn.disabled = index === 0;
         nextBtn.disabled = index === data.length - 1;
+
+        // Инициализация аккордеона для подпериодов
+        initAccordeon();
     }
 
     slider.addEventListener('input', (e) => updateTimeline(parseInt(e.target.value)));
@@ -48,4 +51,14 @@ function initTimeline(data) {
     });
 
     renderHeaders();
+}
+
+// Логика раскрытия подпериодов
+function initAccordeon() {
+    document.querySelectorAll('.subperiod-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const subperiod = header.parentElement;
+            subperiod.classList.toggle('open');
+        });
+    });
 }

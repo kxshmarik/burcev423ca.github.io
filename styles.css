@@ -143,7 +143,7 @@ h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 28px; }
 }
 .main-question b { color: var(--primary); }
 
-/* Структурные блоки: онтология, гносеология и т.д. */
+/* Структурные блоки */
 .structure-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -167,17 +167,64 @@ h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 28px; }
 }
 .struct-card p { margin: 0; font-size: 14px; }
 
-/* Подпериоды */
+/* ====== АККОРДЕОН (подпериоды) ====== */
 .subperiods { margin: 20px 0; }
 .subperiods h3 { color: var(--primary); font-size: 17px; margin: 15px 0 10px 0; }
+
 .subperiod {
     background: white;
+    border: 1px solid var(--border);
     border-left: 3px solid var(--accent-light);
-    padding: 10px 15px;
     margin-bottom: 8px;
     border-radius: 0 6px 6px 0;
+    overflow: hidden;
+    transition: var(--transition);
 }
-.subperiod b { color: var(--primary); }
+
+.subperiod-header {
+    padding: 12px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+    user-select: none;
+}
+.subperiod-header:hover { background: #f0f7fc; }
+.subperiod-header b { color: var(--primary); font-size: 15px; }
+
+.subperiod-header .arrow {
+    color: var(--accent);
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+.subperiod.open .subperiod-header .arrow {
+    transform: rotate(180deg);
+}
+.subperiod.open {
+    border-left-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(41,128,185,0.1);
+}
+
+.subperiod-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 15px;
+    background: #fafafa;
+    font-size: 14px;
+    color: #555;
+}
+.subperiod.open .subperiod-content {
+    max-height: 500px;
+    padding: 12px 15px 15px 15px;
+    border-top: 1px dashed var(--border);
+}
+.subperiod-content p { margin: 6px 0; }
+.subperiod-content ul { margin: 6px 0; padding-left: 20px; }
+.subperiod-content li { margin-bottom: 4px; }
 
 /* Науки */
 .sciences {
